@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect } from 'react';
+
 interface FavoritePaintingScreenProps {
   onSelect: (letter: string) => void;
 }
@@ -7,6 +9,11 @@ interface FavoritePaintingScreenProps {
 const PAINTINGS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q'];
 
 export default function FavoritePaintingScreen({ onSelect }: FavoritePaintingScreenProps) {
+  useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="min-h-screen px-6 py-12">
       <div className="max-w-6xl mx-auto space-y-8">
