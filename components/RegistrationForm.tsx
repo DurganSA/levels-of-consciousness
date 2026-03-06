@@ -82,9 +82,14 @@ export default function RegistrationForm({ onContinue, emailExists }: Registrati
             </div>
           )}
 
-          <p className="text-sm text-gray-600 text-center">
-            Your choices will be shared with Katie after the event.
-          </p>
+          <div className="text-sm text-gray-600 text-center space-y-2">
+            <p>
+              Your choices will be shared with Katie after the event.
+            </p>
+            <p className="text-xs">
+              By providing your details, you consent to Katie sharing the exhibition results with you and keeping you updated about her artwork and future exhibitions.
+            </p>
+          </div>
 
           <button
             type="submit"
