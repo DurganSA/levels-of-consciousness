@@ -78,7 +78,7 @@ export default function Gallery({ onSubmit }: GalleryProps) {
             <PaintingCard
               key={letter}
               letter={letter}
-              imagePath={`/paintings/${letter}.svg`}
+              imagePath={`/paintings/${letter}.jpg`}
               selectedLevel={votes[letter] || null}
               usedLevels={usedLevels}
               onLevelChange={(level) => handleLevelChange(letter, level)}
