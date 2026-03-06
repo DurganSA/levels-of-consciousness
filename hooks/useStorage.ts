@@ -8,6 +8,7 @@ export interface Submission {
   name: string;
   email: string;
   votes: Record<string, number>; // A-Q: 1-17
+  favoritePainting: string; // A-Q
 }
 
 const STORAGE_KEY = 'levels-of-consciousness-submissions';

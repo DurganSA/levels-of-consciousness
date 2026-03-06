@@ -4,16 +4,18 @@ import { useState } from 'react';
 import WelcomeScreen from '@/components/WelcomeScreen';
 import RegistrationForm from '@/components/RegistrationForm';
 import Gallery from '@/components/Gallery';
+import FavoritePaintingScreen from '@/components/FavoritePaintingScreen';
 import ConfirmationScreen from '@/components/ConfirmationScreen';
 import { useStorage, Submission } from '@/hooks/useStorage';
 import { sendSubmissionEmail } from '@/utils/emailService';
 
-type Screen = 'welcome' | 'registration' | 'gallery' | 'confirmation';
+type Screen = 'welcome' | 'registration' | 'gallery' | 'favorite' | 'confirmation';
 
 export default function Home() {
   const [currentScreen, setCurrentScreen] = useState<Screen>('welcome');
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
+  const [userVotes, setUserVotes] = useState<Record<string, number>>({});
   const { submissions, addSubmission, emailExists } = useStorage();
 
   const handleBegin = () => {
@@ -27,12 +29,18 @@ export default function Home() {
   };
 
   const handleGallerySubmit = async (votes: Record<string, number>) => {
+    setUserVotes(votes);
+    setCurrentScreen('favorite');
+  };
+
+  const handleFavoriteSelect = async (favoritePainting: string) => {
     const submission: Submission = {
       id: crypto.randomUUID(),
       timestamp: new Date().toISOString(),
       name: userName,
       email: userEmail,
-      votes,
+      votes: userVotes,
+      favoritePainting,
     };
 
     addSubmission(submission);
@@ -48,6 +56,7 @@ export default function Home() {
   const handleReturnToWelcome = () => {
     setUserName('');
     setUserEmail('');
+    setUserVotes({});
     setCurrentScreen('welcome');
   };
 
@@ -77,6 +86,9 @@ export default function Home() {
         )}
         {currentScreen === 'gallery' && (
           <Gallery onSubmit={handleGallerySubmit} />
+        )}
+        {currentScreen === 'favorite' && (
+          <FavoritePaintingScreen onSelect={handleFavoriteSelect} />
         )}
         {currentScreen === 'confirmation' && (
           <ConfirmationScreen

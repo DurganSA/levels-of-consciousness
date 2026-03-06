@@ -35,12 +35,13 @@ export default function AdminDashboard({ submissions }: AdminDashboardProps) {
   };
 
   const handleExport = () => {
-    const headers = ['Timestamp', 'Name', 'Email', ...PAINTINGS];
+    const headers = ['Timestamp', 'Name', 'Email', ...PAINTINGS, 'Favorite Painting'];
     const rows = submissions.map(sub => [
       new Date(sub.timestamp).toLocaleString('en-GB'),
       sub.name,
       sub.email,
-      ...PAINTINGS.map(letter => getLevelName(sub.votes[letter]))
+      ...PAINTINGS.map(letter => getLevelName(sub.votes[letter])),
+      sub.favoritePainting || '-'
     ]);
 
     const csv = [
@@ -101,6 +102,7 @@ export default function AdminDashboard({ submissions }: AdminDashboardProps) {
                         {letter}
                       </th>
                     ))}
+                    <th className="px-4 py-3 text-center font-medium">Favorite</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
@@ -126,6 +128,9 @@ export default function AdminDashboard({ submissions }: AdminDashboardProps) {
                           {getLevelName(submission.votes[letter])}
                         </td>
                       ))}
+                      <td className="px-4 py-3 text-center font-bold text-[var(--accent)] text-lg">
+                        {submission.favoritePainting || '-'}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
