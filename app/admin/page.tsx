@@ -5,6 +5,9 @@ import AdminDashboard from '@/components/AdminDashboard';
 import { Submission } from '@/hooks/useStorage';
 import { supabase } from '@/utils/supabaseClient';
 
+// Force dynamic rendering (don't pre-render at build time)
+export const dynamic = 'force-dynamic';
+
 export default function AdminPage() {
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [loading, setLoading] = useState(true);
