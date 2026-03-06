@@ -1,6 +1,11 @@
-import { Submission } from '@/hooks/useStorage';
-
-export async function sendSubmissionEmail(submission: Submission): Promise<boolean> {
+export async function sendSubmissionEmail(submission: {
+  id: string;
+  created_at: string;
+  name: string;
+  email: string;
+  votes: Record<string, number>;
+  favorite_painting: string;
+}): Promise<boolean> {
   try {
     // Format the votes for email body
     const votesText = Object.entries(submission.votes)
@@ -13,10 +18,12 @@ New Exhibition Vote Submission
 
 Name: ${submission.name}
 Email: ${submission.email}
-Submitted: ${new Date(submission.timestamp).toLocaleString('en-GB')}
+Submitted: ${new Date(submission.created_at).toLocaleString('en-GB')}
 
 Consciousness Level Assignments:
 ${votesText}
+
+Favorite Painting: ${submission.favorite_painting}
     `.trim();
 
     // TODO: Integrate with Resend API

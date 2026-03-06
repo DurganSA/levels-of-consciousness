@@ -37,11 +37,11 @@ export default function AdminDashboard({ submissions }: AdminDashboardProps) {
   const handleExport = () => {
     const headers = ['Timestamp', 'Name', 'Email', ...PAINTINGS, 'Favorite Painting'];
     const rows = submissions.map(sub => [
-      new Date(sub.timestamp).toLocaleString('en-GB'),
+      new Date(sub.created_at || '').toLocaleString('en-GB'),
       sub.name,
       sub.email,
       ...PAINTINGS.map(letter => getLevelName(sub.votes[letter])),
-      sub.favoritePainting || '-'
+      sub.favorite_painting || '-'
     ]);
 
     const csv = [
@@ -109,7 +109,7 @@ export default function AdminDashboard({ submissions }: AdminDashboardProps) {
                   {submissions.map((submission) => (
                     <tr key={submission.id} className="hover:bg-gray-50">
                       <td className="px-4 py-3 whitespace-nowrap text-gray-600">
-                        {new Date(submission.timestamp).toLocaleString('en-GB', {
+                        {new Date(submission.created_at || '').toLocaleString('en-GB', {
                           day: '2-digit',
                           month: '2-digit',
                           year: 'numeric',
@@ -129,7 +129,7 @@ export default function AdminDashboard({ submissions }: AdminDashboardProps) {
                         </td>
                       ))}
                       <td className="px-4 py-3 text-center font-bold text-[var(--accent)] text-lg">
-                        {submission.favoritePainting || '-'}
+                        {submission.favorite_painting || '-'}
                       </td>
                     </tr>
                   ))}

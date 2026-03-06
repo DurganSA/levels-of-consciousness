@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 interface RegistrationFormProps {
   onContinue: (name: string, email: string) => void;
-  emailExists: (email: string) => boolean;
+  emailExists: (email: string) => Promise<boolean>;
 }
 
 export default function RegistrationForm({ onContinue, emailExists }: RegistrationFormProps) {
@@ -12,7 +12,7 @@ export default function RegistrationForm({ onContinue, emailExists }: Registrati
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
@@ -27,7 +27,8 @@ export default function RegistrationForm({ onContinue, emailExists }: Registrati
       return;
     }
 
-    if (emailExists(email)) {
+    const exists = await emailExists(email);
+    if (exists) {
       setError("You've already submitted your choices. Thank you for participating!");
       return;
     }

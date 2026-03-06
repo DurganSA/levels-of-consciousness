@@ -34,23 +34,30 @@ export default function Home() {
   };
 
   const handleFavoriteSelect = async (favoritePainting: string) => {
-    const submission: Submission = {
-      id: crypto.randomUUID(),
-      timestamp: new Date().toISOString(),
+    const submission = {
       name: userName,
       email: userEmail,
       votes: userVotes,
-      favoritePainting,
+      favorite_painting: favoritePainting,
     };
 
-    addSubmission(submission);
-    
-    // Attempt to send email (non-blocking)
-    sendSubmissionEmail(submission).catch(err => {
-      console.error('Email send failed:', err);
-    });
+    try {
+      await addSubmission(submission);
+      
+      // Attempt to send email (non-blocking)
+      sendSubmissionEmail({
+        id: crypto.randomUUID(),
+        created_at: new Date().toISOString(),
+        ...submission,
+      }).catch(err => {
+        console.error('Email send failed:', err);
+      });
 
-    setCurrentScreen('confirmation');
+      setCurrentScreen('confirmation');
+    } catch (error) {
+      console.error('Failed to submit:', error);
+      alert('Failed to submit your responses. Please try again.');
+    }
   };
 
   const handleReturnToWelcome = () => {
